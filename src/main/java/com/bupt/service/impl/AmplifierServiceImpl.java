@@ -78,7 +78,7 @@ class AmplifierServiceImpl implements AmplifierService {
         return true;
     }
 
-
+    //修补bug：同步方法器的时候，缺少DiskType字段
     @Override
     @Transactional
     public AmplifierDTO insertAmplifier(Long versionId, AmplifierCreateInfo amplifierCreateInfo) {
@@ -151,6 +151,7 @@ class AmplifierServiceImpl implements AmplifierService {
         result.setMinimumInputPower(amplifierCreateInfo.getMinimumInputPower());
         result.setMaximumOutputPower(amplifierCreateInfo.getMaximumOutputPower());
         result.setMaximumInputPower(amplifierCreateInfo.getMaximumInputPower());
+        result.setDiskType(amplifierCreateInfo.getDiskType());
         return result;
     }
 

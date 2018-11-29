@@ -56,6 +56,18 @@ class DiskServiceImpl implements DiskService {
         return convertToDTO(resDiskDao.selectOne(insertInfo));
     }
 
+    //修补bug：同步机盘的时候，缺少AmplifierName字段
+    public DiskDTO saveDiskA(Long versionId, Long netElementId, DiskCreateInfo diskCreateInfo,String a) {
+        ResDisk insertInfo = createResDisk(diskCreateInfo);
+        insertInfo.setVersionId(versionId);
+        insertInfo.setNetElementId(netElementId);
+        insertInfo.setAmplifierName(a);
+        if (resDiskDao.insertSelective(insertInfo) == 0) {
+            throw new NoneSaveException();
+        }
+        return convertToDTO(resDiskDao.selectOne(insertInfo));
+    }
+
     @Override
     public DiskDTO updateDisk(Long versionId, Long netElementId, Long diskId, DiskCreateInfo diskCreateInfo) {
         if (resDiskDao.updateByExampleSelective(createResDisk(diskCreateInfo), getExample(versionId, netElementId,
@@ -87,8 +99,8 @@ class DiskServiceImpl implements DiskService {
         List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
         for (ResDisk disk : basicVersionList) {
             DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getSlotId());
-            saveDisk(newVersionId, getNewElementId(baseVersionId, disk.getNetElementId(),
-                    newVersionId), newDisk);
+            saveDiskA(newVersionId, getNewElementId(baseVersionId, disk.getNetElementId(),
+                    newVersionId), newDisk,disk.getAmplifierName());
         }
     }
 

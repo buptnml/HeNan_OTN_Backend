@@ -6,6 +6,15 @@ public class AmplifierCreateInfo {
     private Short minimumInputPower;
     private Short maximumInputPower;
     private Short maximumOutputPower;
+    private String diskType;
+
+    public String getDiskType() {
+        return diskType;
+    }
+
+    public void setDiskType(String diskType) {
+        this.diskType = diskType;
+    }
 
     public String getAmplifierName() {
         return amplifierName;
